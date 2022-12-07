@@ -1,0 +1,20 @@
+  @R1
+  D=M
+  @R2
+  D=D-M
+  @NOT
+  D;JLT
+  @R1
+  D=M
+  @R0
+  M=D
+  @END
+  0;JMP
+(NOT)
+  @R2
+  D=M
+  @R0
+  M=D
+(END)
+  @END
+  0;JMP

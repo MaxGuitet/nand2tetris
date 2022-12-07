@@ -1,0 +1,21 @@
+@i
+M=0
+(LOOP)
+  @R1
+  D=M
+  @i
+  D=D-M
+  @END
+  D;JLE
+  @R0
+  D=M
+  @i
+  A=D+M
+  M=-1
+  @i
+  M=M+1
+  @LOOP
+  0;JMP
+(END)
+  @END
+  0;JMP
