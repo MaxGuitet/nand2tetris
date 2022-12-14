@@ -1,11 +1,18 @@
 // Extract each line (delimited by the \n => 128)
 // and convert it to the corresponding hack instruction
 
+// R0 will store the address of the character we are reading
+// R10 will store the destination address for the next instruction, starting at 8184 (=(16384-16)/2)
 // Initialize to the first address of the program to parse
 @16
 D=A
 @R0
 M=D
+@8184
+D=A
+@R10
+M=D
+
 
 (READ)
   // @ char code is 64. Store it and compare to determine
@@ -30,6 +37,8 @@ M=D
 
 (END_A_INS)
   @R0
+  M=M+1
+  @R10
   M=M+1
   @READ
   0;JMP
@@ -753,14 +762,38 @@ M=D
   @PARSE_JUMP
   D;JEQ
   // If we do not have a ";", we are done, move to next instruction
-  // Skip the next char as it is a \n
-  @R0
-  M=M+1
-  @READ
+  @END_D_INS
   0;JMP
 
 
 (PARSE_JUMP)
+  // Ignore the first char as it is "J"
+  @R0
+  M=M+1
+  A=M
+  // If second is "N" (78) => JNE
+  D=M
+  @78
+  D=D-A
+  @JNE
+  D;JEQ
+
+(JNE)
+  @END
+  0;JMP
+
+(END_D_INS)
+  // Get the full computed C-instruction and add it to output
+  @R5
+  D=M
+  @R10
+  A=M
+  M=D
+  // Update pointer to next instruction
+  @R10
+  M=M+1
+  @READ
+  0;JMP
 
 (END)
   @END
