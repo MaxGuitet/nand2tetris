@@ -38,6 +38,13 @@ M=D
 (END_A_INS)
   @R0
   M=M+1
+  // Fake A-instruction for testing purpose
+  @21845 // 0101010101010101
+  D=A
+  @R10
+  A=M
+  M=D
+  // Update pointer to next instruction
   @R10
   M=M+1
   @READ
@@ -770,16 +777,131 @@ M=D
   // Ignore the first char as it is "J"
   @R0
   M=M+1
+  // Read next char
   A=M
-  // If second is "N" (78) => JNE
   D=M
+  // If second is "N" (78) => JNE
   @78
   D=D-A
-  @JNE
+  @PARSE_JNE
+  D;JEQ
+  // If second is "M" (77) => JMP
+  @77
+  D=D-A
+  @PARSE_JMP
+  // If second is "E" (69) => JEQ
+  @69
+  D=D-A
+  @PARSE_JEQ
+  D;JEQ
+  // If second is "G" (71)
+  @71
+  D=D-A
+  @PARSE_JG
+  D;JEQ
+  // If second is "L" (76)
+  @76
+  D=D-A
+  @PARSE_JL
   D;JEQ
 
-(JNE)
-  @END
+(PARSE_JNE)
+  // JNE => 101 [2] = 5 [10]
+  @5
+  D=A
+  @R5
+  M=D|M
+  @END_JUMP
+  0;JMP
+
+(PARSE_JMP)
+  // JMP => 111 [2] = 7 [10]
+  @7
+  D=A
+  @R5
+  M=D|M
+  @END_JUMP
+  0;JMP
+
+(PARSE_JEQ)
+  // JMP => 010 [2] = 2 [10]
+  @2
+  D=A
+  @R5
+  M=D|M
+  @END_JUMP
+  0;JMP
+
+(PARSE_JG)
+  // Read next char
+  @R0
+  M=M+1
+  A=M
+  D=M
+  // If third is "E" (69) => JGE
+  @69
+  D=D-A
+  @PARSE_JGE
+  D;JEQ
+  // Else it's JGT
+  @PARSE_JGT
+  0;JMP
+
+(PARSE_JGE)
+  // JGE => 011 [2] = 3 [10]
+  @3
+  D=A
+  @R5
+  M=D|M
+  @END_JUMP
+  0;JMP
+
+(PARSE_JGT)
+  // JGT => 001 [2] = 1 [10]
+  @1
+  D=A
+  @R5
+  M=D|M
+  @END_JUMP
+  0;JMP
+
+(PARSE_JL)
+  // Read next char
+  @R0
+  M=M+1
+  A=M
+  D=M
+  // If third is "E" (69) => JGE
+  @69
+  D=D-A
+  @PARSE_JLE
+  D;JEQ
+  // Else it's JLT
+  @PARSE_JLT
+  0;JMP
+
+(PARSE_JLE)
+  // JLE => 110 [2] = 6 [10]
+  @6
+  D=A
+  @R5
+  M=D|M
+  @END_JUMP
+  0;JMP
+
+(PARSE_JLT)
+  // JLT => 100 [2] = 4 [10]
+  @4
+  D=A
+  @R5
+  M=D|M
+  @END_JUMP
+  0;JMP
+
+(END_JUMP)
+  @R0
+  M=M+1
+  @END_D_INS
   0;JMP
 
 (END_D_INS)
