@@ -25,7 +25,15 @@ M=D
   D=D-M
   @A_INS
   D;JEQ
-  // If we have a character other than @, it's a D-ins
+  // If character is \n (128), continue reading
+  @128
+  D=A
+  @R0
+  A=M
+  D=D-M
+  @READ
+  D;JEQ
+  // If we have a character , it's a D-ins
   @R0
   A=M
   D=M
@@ -350,7 +358,9 @@ M=D
   M=M+D
   M=M+D
   M=M+D
-  // We have now finished, extract value
+  // We have now finished, extract value and go to next char
+  @R0
+  M=M+1
   // Not needed since it's below, but helps clarifying
   @EXTRACT_COMP
   0;JMP
