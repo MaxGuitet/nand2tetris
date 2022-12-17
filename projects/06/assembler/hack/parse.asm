@@ -492,7 +492,7 @@ M=D
   D=M
   @314
   D=D-A
-  @COMP_A_MINUS_1
+  @COMP_M_MINUS_1
   D;JEQ
   // D+A => 349
   @R4
@@ -520,7 +520,7 @@ M=D
   D=M
   @389
   D=D-A
-  @COMP_D_MINUS_A
+  @COMP_D_MINUS_M
   D;JEQ
   // A-D => 359
   @R4
@@ -735,6 +735,7 @@ M=D
   @4544
   D=A
   @ADD_COMP_BITS
+  0;JMP
 
 (COMP_D_AND_A)
   // Code needs to be (0)000000(000000) [2] => 0 [10]
@@ -747,18 +748,21 @@ M=D
   @4096
   D=A
   @ADD_COMP_BITS
+  0;JMP
 
 (COMP_D_OR_A)
   // Code needs to be (0)010101(000000) [2] => 1344 [10]
   @1344
   D=A
   @ADD_COMP_BITS
+  0;JMP
 
 (COMP_D_OR_M)
   // Code needs to be (1)010101(000000) [2] => 5440 [10]
   @5440
   D=A
   @ADD_COMP_BITS
+  0;JMP
 
 // The value we want to add is in D
 // Compute the logical OR
