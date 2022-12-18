@@ -31,17 +31,24 @@ M=D
   @R0
   A=M
   D=D-M
-  @READ
+  @READ_NEXT_CHAR
   D;JEQ
   // If we have a character , it's a D-ins
   @R0
   A=M
   D=M
   @D_INS
-  D;JGE
+  D;JGT
   // else, end script
   @END
   0;JMP
+
+(READ_NEXT_CHAR)
+  @R0
+  M=M+1
+  @READ
+  0;JMP
+
 
 (END_A_INS)
   @R0
@@ -792,28 +799,42 @@ M=D
   @R0
   M=M+1
   // Read next char
+  // If second is "N" (78) => JNE
+  @R0
   A=M
   D=M
-  // If second is "N" (78) => JNE
   @78
   D=D-A
   @PARSE_JNE
   D;JEQ
   // If second is "M" (77) => JMP
+  @R0
+  A=M
+  D=M
   @77
   D=D-A
   @PARSE_JMP
+  D;JEQ
   // If second is "E" (69) => JEQ
+  @R0
+  A=M
+  D=M
   @69
   D=D-A
   @PARSE_JEQ
   D;JEQ
   // If second is "G" (71)
+  @R0
+  A=M
+  D=M
   @71
   D=D-A
   @PARSE_JG
   D;JEQ
   // If second is "L" (76)
+  @R0
+  A=M
+  D=M
   @76
   D=D-A
   @PARSE_JL
@@ -825,6 +846,9 @@ M=D
   D=A
   @R5
   M=D|M
+  @R0
+  M=M+1
+  M=M+1
   @END_JUMP
   0;JMP
 
@@ -834,6 +858,9 @@ M=D
   D=A
   @R5
   M=D|M
+  @R0
+  M=M+1
+  M=M+1
   @END_JUMP
   0;JMP
 
@@ -843,6 +870,9 @@ M=D
   D=A
   @R5
   M=D|M
+  @R0
+  M=M+1
+  M=M+1
   @END_JUMP
   0;JMP
 
@@ -867,6 +897,8 @@ M=D
   D=A
   @R5
   M=D|M
+  @R0
+  M=M+1
   @END_JUMP
   0;JMP
 
@@ -876,6 +908,8 @@ M=D
   D=A
   @R5
   M=D|M
+  @R0
+  M=M+1
   @END_JUMP
   0;JMP
 
@@ -900,6 +934,8 @@ M=D
   D=A
   @R5
   M=D|M
+  @R0
+  M=M+1
   @END_JUMP
   0;JMP
 
@@ -909,6 +945,8 @@ M=D
   D=A
   @R5
   M=D|M
+  @R0
+  M=M+1
   @END_JUMP
   0;JMP
 

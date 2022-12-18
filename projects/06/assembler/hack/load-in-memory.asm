@@ -1,28 +1,6 @@
 // Those are the char codes for the Add.asm script
 // To simulate the fact that the user typed it, load it manually in RAM
 // from address 16
-// 64,
-// 50,
-// 128,
-// 68,
-// 61,
-// 65,
-// 128,
-// 64,
-// 51,
-// 128,
-// 68,
-// 61,
-// 68,
-// 43,
-// 65,
-// 128,
-// 64,
-// 48,
-// 128,
-// 77,
-// 61,
-// 68
 
 // Loading @
 @64
