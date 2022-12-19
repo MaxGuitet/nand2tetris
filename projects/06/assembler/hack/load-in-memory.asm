@@ -112,10 +112,10 @@ M=D
 D=A
 @37
 M=D
-// Setting R1 to the correct position for next char
-@38
-D=M
-@R1
+// Loading \n
+@128
+D=A
+@34
 M=D
 
 (END)

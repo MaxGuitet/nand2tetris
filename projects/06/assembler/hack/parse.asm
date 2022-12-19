@@ -23,7 +23,7 @@ M=D
   A=M
   // If the character at position M[R0] is an @, D=0, jump to A-instruction
   D=D-M
-  @A_INS
+  @INIT_A_INS
   D;JEQ
   // If character is \n (128), continue reading
   @128
@@ -49,13 +49,133 @@ M=D
   @READ
   0;JMP
 
-
-(END_A_INS)
+// A-instruction
+// R1 will be used as pointer to the current char (starting with the left-most one)
+// R2 will store the number of times we need to multiply by 10
+// R3 will store the value of the number multiplied by 10^n to add to A-ins output
+// R4 will be used as the loop index for multiplication, initialized at R2
+// R5 will store the final value of the C-ins
+(INIT_A_INS)
+// Skip @ char
   @R0
   M=M+1
-  // Fake A-instruction for testing purpose
-  @21845 // 0101010101010101
+  D=M
+  // Set pointer to the starting char 
+  @R1
+  M=D
+  @R2
+  M=0
+  @R5
+  M=0
+  @A_INS
+  0;JMP
+
+(A_INS)
+  // Check if \n
+  @128
   D=A
+  @R0
+  A=M
+  D=D-M
+  @PARSE_A_INS
+  D;JEQ
+  // Store address of current number in R1
+  @R0
+  D=M
+  @R1
+  M=D
+  // Move to next char
+  @R0
+  M=M+1
+  @A_INS
+  0;JMP
+
+(PARSE_A_INS)
+  // Based on the length of the instruction, multiply each
+  // character by 10 the corresponding number of times
+  // When we finish A_INS, the pointer is at the unit value.
+  // then we go back to tenth, hunderdth, etc.
+  // The number of times to multiply by 10 is in R3, initialized at 0
+
+  // Read back until we reach @ char
+  @64
+  D=A
+  @R1
+  A=M
+  // If the character at position M[R1] is an @, finish A-INS
+  D=D-M
+  @END_A_INS
+  D;JEQ
+
+  // Store value of current number to R3
+  @R1
+  A=M
+  D=M
+  // There is a 48 offset in ASCII between number and it's charCode
+  // ie 0 => 48, 1 => 49, etc.
+  // thus we remove 48 to the char value
+  @48
+  D=D-A
+  @R3
+  M=D
+
+  // If R2 > 0, we need to mutiply by 10, otherwise go to next char
+  @R2
+  D=M
+  // Store number of times we need to multiply by 10
+  @R4
+  M=D
+  @MULT_10
+  D;JGT
+
+  @ADD_TO_A_RESULT
+  0;JMP
+
+(MULT_10)
+  // Get the value of the current number and multiply by 10 000
+  @R3
+  D=M
+  D=D+M
+  D=D+M
+  D=D+M
+  D=D+M
+  D=D+M
+  D=D+M
+  D=D+M
+  D=D+M
+  D=D+M // D=M[R1] * 10
+  @R3
+  M=D
+  @R4
+  M=M-1
+  D=M
+  // If R4 still > 0, keep multiplying
+  @MULT_10
+  D;JGT
+  // Otherwise, Add to A-result
+  @ADD_TO_A_RESULT
+  0;JMP
+
+(ADD_TO_A_RESULT)
+  // Get final value of current number * 10^n and add to R5
+  @R3
+  D=M
+  @R5
+  M=M+D
+  // Move back to next number (eg 12[3] => 1[2]3)
+  @R1
+  M=M-1
+  // Since we move up, we need to multiply by 10 one more time
+  @R2
+  M=M+1
+  @PARSE_A_INS
+  0;JMP
+
+(END_A_INS)
+  // R5 holds the final value for the A-INS
+  @R5
+  D=M
+  // Store value to M[R10]
   @R10
   A=M
   M=D
@@ -65,37 +185,12 @@ M=D
   @READ
   0;JMP
 
-// A-instruction
-(A_INS)
-  // Check if @ char
-  @64
-  D=A
-  @R0
-  A=M
-  D=D-M
-  @AT_CHAR
-  D;JEQ
-  // Check if \n
-  @128
-  D=A
-  @R0
-  A=M
-  D=D-M
-  @END_A_INS
-  D;JEQ
-  // else, increment and keep looping for now
-  @R0
-  M=M+1
-  @A_INS
-  0;JMP
-
-  
 // When reading @ char, simply ignore it and go to next
-(AT_CHAR)
-  @R0
-  M=M+1
-  @A_INS
-  0;JMP
+// (AT_CHAR)
+//   @R0
+//   M=M+1
+//   @A_INS
+//   0;JMP
 
 // C-instruction
 // We will first read the full instruction to see if we have a "=" or a ";"
