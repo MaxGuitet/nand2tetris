@@ -1,0 +1,4 @@
+{
+  "java.project.sourcePaths": ["projects/06/assembler/java"],
+  "java.dependency.packagePresentation": "hierarchical"
+}
