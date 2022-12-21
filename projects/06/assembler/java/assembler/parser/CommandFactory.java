@@ -3,7 +3,6 @@ package assembler.parser;
 import java.util.regex.Pattern;
 
 class CommandFactory {
-
     static Command getCommand(String commandString) {
         boolean isACommand = Pattern.matches("@.*", commandString);
 

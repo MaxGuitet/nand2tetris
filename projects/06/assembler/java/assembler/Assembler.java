@@ -15,7 +15,7 @@ public class Assembler {
         this.parser = new Parser(filepath);
     }
 
-    public List<String> run() {
+    public List<String> parseFile() {
         while (parser.hasMoreCommands()) {
             parser.advance();
 

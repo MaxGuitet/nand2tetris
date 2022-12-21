@@ -13,14 +13,10 @@ class LCommand extends Command {
     }
 
     CommandType getType() {
-        return type;
+        return this.type;
     }
 
     String getSymbol() {
         return this.symbol;
-    }
-
-    String getHackCode() {
-        return "";
     }
 }

@@ -28,10 +28,10 @@ public class Parser {
     }
 
     void initParser() {
-        this.readNextLine();
+        this.readNextCommand();
     }
 
-    void readNextLine() {
+    void readNextCommand() {
         try {
             boolean isEmptyLine = false;
             boolean isCommentLine = false;
@@ -81,7 +81,7 @@ public class Parser {
             ex.printStackTrace();
         }
 
-        this.readNextLine();
+        this.readNextCommand();
     }
 
     public CommandType commandType() {

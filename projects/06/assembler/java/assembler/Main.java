@@ -23,7 +23,7 @@ public class Main {
         }
 
         Assembler assembler = new Assembler(filepath);
-        List<String> output = assembler.run();
+        List<String> output = assembler.parseFile();
 
         String destinationFile = filepath.replace(".asm", ".hack");
         try {
