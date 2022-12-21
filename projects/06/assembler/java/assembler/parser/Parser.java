@@ -1,8 +1,6 @@
 package assembler.parser;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.regex.Pattern;
 
@@ -10,17 +8,6 @@ public class Parser {
     private BufferedReader reader;
     private Command currentCommand;
     private String nextLine;
-
-    public Parser(String filePath) {
-        try {
-            FileReader fileReader = new FileReader(filePath);
-            this.reader = new BufferedReader(fileReader);
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-        }
-
-        this.initParser();
-    }
 
     public Parser(BufferedReader inputBuffer) {
         this.reader = inputBuffer;

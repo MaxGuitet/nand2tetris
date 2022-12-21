@@ -1,10 +1,6 @@
 package assembler;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.nio.file.Path;
-import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
@@ -13,8 +9,9 @@ public class Main {
             System.out.println("Missing input script arg.");
             return;
         }
-        String filepath = args[0];
-        Path path = Path.of(filepath, args);
+
+        String inputFilePath = args[0];
+        Path path = Path.of(inputFilePath, args);
         String fileName = path.getFileName().toString();
 
         if (!fileName.endsWith(".asm")) {
@@ -22,24 +19,9 @@ public class Main {
             return;
         }
 
-        Assembler assembler = new Assembler(filepath);
-        List<String> output = assembler.parseFile();
+        String destinationFilePath = inputFilePath.replace(".asm", ".hack");
 
-        String destinationFile = filepath.replace(".asm", ".hack");
-        try {
-
-            FileWriter fileWriter = new FileWriter(destinationFile, false);
-            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-
-            for (String line : output) {
-                bufferedWriter.write(line);
-                bufferedWriter.newLine();
-            }
-
-            bufferedWriter.close();
-        } catch (IOException ex) {
-            System.out.println("Failed to write result to output file.");
-            ex.printStackTrace();
-        }
+        Assembler assembler = new Assembler(inputFilePath, destinationFilePath);
+        assembler.parseFile();
     }
 }

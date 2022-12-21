@@ -1,7 +1,10 @@
 package assembler;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 
 import assembler.parser.Parser;
 import assembler.code.Code;
@@ -9,13 +12,23 @@ import assembler.parser.CommandType;
 
 public class Assembler {
     private Parser parser;
-    private List<String> outputContent = new ArrayList<String>();
+    private BufferedWriter writer;
 
-    public Assembler(String filepath) {
-        this.parser = new Parser(filepath);
+    public Assembler(String inputFilePath, String destinationFilePath) {
+        try {
+            FileReader fileReader = new FileReader(inputFilePath);
+            BufferedReader reader = new BufferedReader(fileReader);
+
+            FileWriter fileWriter = new FileWriter(destinationFilePath, false);
+            this.writer = new BufferedWriter(fileWriter);
+
+            this.parser = new Parser(reader);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
     }
 
-    public List<String> parseFile() {
+    public void parseFile() {
         while (parser.hasMoreCommands()) {
             parser.advance();
 
@@ -44,10 +57,20 @@ public class Assembler {
                 ex.printStackTrace();
             }
 
-            outputContent.add(commandHackCode);
+            try {
+                this.writer.write(commandHackCode);
+                this.writer.newLine();
+            } catch (IOException ex) {
+                System.out.println("Failed to parse code to destination file.");
+                ex.printStackTrace();
+            }
         }
 
-        return outputContent;
+        try {
+            this.writer.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
 
     }
 
