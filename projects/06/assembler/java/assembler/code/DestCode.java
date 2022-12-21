@@ -1,6 +1,6 @@
-package assembler.symboltable;
+package assembler.code;
 
-public enum DestTable {
+public enum DestCode {
     NONE("000"),
     M("001"),
     D("010"),
@@ -12,7 +12,7 @@ public enum DestTable {
 
     private String code = "";
 
-    DestTable(String code) {
+    DestCode(String code) {
         this.code = code;
     }
 

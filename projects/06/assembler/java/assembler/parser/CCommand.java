@@ -14,11 +14,10 @@ class CCommand extends Command {
         type = CommandType.C_COMMAND;
     }
 
-    @Override
     void parseCommand() throws Exception {
         // if commandContent is only numbers, we simply extract its value
         Pattern groups = Pattern
-                .compile("^((?<dest>[AMD]*)=)?((?<comp>[!ADM01|&+\\-]*);?)(?<jump>JGT|JGE|JEQ|JLT|JLE|JNE|JMP)?");
+                .compile("^((?<dest>[AMD]+)=)?((?<comp>[!ADM01|&+\\-]+);?)(?<jump>JGT|JGE|JEQ|JLT|JLE|JNE|JMP)?");
         Matcher groupsMatcher = groups.matcher(this.commandString);
 
         if (!groupsMatcher.matches()) {
@@ -39,10 +38,17 @@ class CCommand extends Command {
     }
 
     String getDest() {
+        if (this.dest == null) {
+            return "NONE";
+        }
         return this.dest;
     }
 
     String getJump() {
+        if (this.jump == null) {
+            return "NONE";
+        }
+
         return this.jump;
     }
 }

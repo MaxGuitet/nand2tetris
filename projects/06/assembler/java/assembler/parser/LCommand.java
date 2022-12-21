@@ -19,4 +19,8 @@ class LCommand extends Command {
     String getSymbol() {
         return this.symbol;
     }
+
+    String getHackCode() {
+        return "";
+    }
 }

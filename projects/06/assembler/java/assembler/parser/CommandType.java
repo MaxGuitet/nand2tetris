@@ -1,6 +1,6 @@
 package assembler.parser;
 
-enum CommandType {
+public enum CommandType {
     A_COMMAND,
     C_COMMAND,
     L_COMMAND

@@ -1,6 +1,6 @@
-package assembler.symboltable;
+package assembler.code;
 
-public enum CompTable {
+public enum CompCode {
     ZERO("0101010"),
     ONE("0111111"),
     MINUS_ONE("0111010"),
@@ -32,7 +32,7 @@ public enum CompTable {
 
     private String code = "";
 
-    CompTable(String code) {
+    CompCode(String code) {
         this.code = code;
     }
 

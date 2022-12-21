@@ -6,6 +6,7 @@ abstract class Command {
 
     Command(String commandString) {
         this.commandString = commandString;
+
         try {
             parseCommand();
         } catch (Exception ex) {

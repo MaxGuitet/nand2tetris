@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 public class Parser {
     private BufferedReader reader;
@@ -12,22 +13,48 @@ public class Parser {
 
     public Parser(String filePath) {
         try {
-
             FileReader fileReader = new FileReader(filePath);
-            BufferedReader reader = new BufferedReader(fileReader);
-            new Parser(reader);
+            this.reader = new BufferedReader(fileReader);
         } catch (FileNotFoundException ex) {
             ex.printStackTrace();
         }
 
+        this.initParser();
     }
 
     public Parser(BufferedReader inputBuffer) {
         this.reader = inputBuffer;
+        this.initParser();
+    }
+
+    void initParser() {
+        this.readNextLine();
+    }
+
+    void readNextLine() {
         try {
-            this.nextLine = this.reader.readLine();
+            boolean isEmptyLine = false;
+            boolean isCommentLine = false;
+            String line;
+
+            do {
+
+                line = this.reader.readLine();
+                if (line == null) {
+                    this.nextLine = null;
+                    return;
+                }
+                // Remove spaces as per specifications
+                line = line.replace(" ", "");
+
+                // Keep reading if we have empty line or comments
+                isCommentLine = Pattern.matches("\\/\\/.*", line);
+                isEmptyLine = Pattern.matches("^$", line);
+            } while (isCommentLine || isEmptyLine);
+
+            this.nextLine = line;
         } catch (IOException ex) {
-            System.out.println("Empty input.");
+            System.out.println("Failed to read next file line.");
             ex.printStackTrace();
         }
     }
@@ -48,15 +75,13 @@ public class Parser {
         }
 
         try {
-            nextLine = reader.readLine();
-        } catch (IOException ex) {
+            currentCommand.parseCommand();
+        } catch (Exception ex) {
+            System.out.println("Failed to parse command " + nextLine);
             ex.printStackTrace();
-            try {
-                reader.close();
-            } catch (IOException closeEx) {
-                closeEx.printStackTrace();
-            }
         }
+
+        this.readNextLine();
     }
 
     public CommandType commandType() {
@@ -115,5 +140,4 @@ public class Parser {
 
         return cCommand.getJump();
     }
-
 }

@@ -1,22 +1,19 @@
 package assembler.parser;
 
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 class CommandFactory {
 
     static Command getCommand(String commandString) {
-        Pattern atPattern = Pattern.compile("^@");
-        Matcher atMatch = atPattern.matcher(commandString);
+        boolean isACommand = Pattern.matches("@.*", commandString);
 
-        if (atMatch.matches()) {
+        if (isACommand) {
             return new ACommand(commandString);
         }
 
-        Pattern lPattern = Pattern.compile("^(");
-        Matcher lMatch = lPattern.matcher(commandString);
+        boolean isLCommand = Pattern.matches("^\\(.*", commandString);
 
-        if (lMatch.matches()) {
+        if (isLCommand) {
             return new LCommand(commandString);
         }
 
