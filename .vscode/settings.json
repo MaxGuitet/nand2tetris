@@ -1,4 +1,5 @@
 {
   "java.project.sourcePaths": ["projects/06/assembler/java"],
+  "java.project.outputPath": "projects/06/assembler/java-bin",
   "java.dependency.packagePresentation": "hierarchical"
 }
