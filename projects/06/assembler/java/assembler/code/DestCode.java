@@ -4,11 +4,11 @@ public enum DestCode {
     NONE("000"),
     M("001"),
     D("010"),
-    DM("011"),
+    MD("011"),
     A("100"),
     AM("101"),
     AD("110"),
-    ADM("111");
+    AMD("111");
 
     private String code = "";
 
