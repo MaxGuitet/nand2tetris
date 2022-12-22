@@ -21,23 +21,23 @@ public class Parser {
     void readNextCommand() {
         try {
             boolean isEmptyLine = false;
-            boolean isCommentLine = false;
             String line;
 
             do {
 
                 line = this.reader.readLine();
+
                 if (line == null) {
                     this.nextLine = null;
                     return;
                 }
                 // Remove spaces as per specifications
-                line = line.replace(" ", "");
+                line = line.replace(" ", "").replaceAll("\\/\\/.*$", "");
 
-                // Keep reading if we have empty line or comments
-                isCommentLine = Pattern.matches("\\/\\/.*", line);
+                // Keep reading if we have empty line
+                // Comment lines will have been emptied above
                 isEmptyLine = Pattern.matches("^$", line);
-            } while (isCommentLine || isEmptyLine);
+            } while (isEmptyLine);
 
             this.nextLine = line;
         } catch (IOException ex) {
@@ -126,5 +126,10 @@ public class Parser {
         CCommand cCommand = (CCommand) currentCommand;
 
         return cCommand.getJump();
+    }
+
+    public void reset() throws IOException {
+        this.reader.reset();
+        this.initParser();
     }
 }

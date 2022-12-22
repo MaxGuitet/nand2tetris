@@ -16,7 +16,7 @@
       "request": "launch",
       "mainClass": "assembler.Main",
       "projectName": "nand2tetris_b5b22939",
-      "args": "/home/max/Projects/nand2tetris/projects/06/add/Add.asm"
+      "args": "/home/max/Projects/nand2tetris/projects/06/max/Max.asm"
     }
   ]
 }
