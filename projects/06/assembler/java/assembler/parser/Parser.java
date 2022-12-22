@@ -14,6 +14,18 @@ public class Parser {
         this.initParser();
     }
 
+    public void setInputBuffer(BufferedReader inputBuffer) {
+        // try closing the current buffer
+        try {
+            this.reader.close();
+        } catch (IOException ex) {
+            System.out.println("Failed to close current buffer.");
+        }
+
+        this.reader = inputBuffer;
+        this.initParser();
+    }
+
     void initParser() {
         this.readNextCommand();
     }
@@ -128,8 +140,7 @@ public class Parser {
         return cCommand.getJump();
     }
 
-    public void reset() throws IOException {
-        this.reader.reset();
-        this.initParser();
+    public void close() throws IOException {
+        this.reader.close();
     }
 }

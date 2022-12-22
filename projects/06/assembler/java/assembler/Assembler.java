@@ -2,7 +2,7 @@ package assembler;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -17,6 +17,7 @@ import assembler.code.Code;
 import assembler.parser.CommandType;
 
 public class Assembler {
+    private String inputFilePath;
     private Parser parser;
     private SymbolTable symbolTable;
     private BufferedReader reader;
@@ -26,18 +27,11 @@ public class Assembler {
     private int currentLine = -1;
 
     public Assembler(String inputFilePath, String destinationFilePath) {
+        this.inputFilePath = inputFilePath;
         this.symbolTable = new SymbolTable();
 
         try {
-            // TODO:
-            // Rework implementation of file reading.
-            // At the moment, the .mark method buffers the whole file in memory.
-            // We need that to be able to call the "reset" method.
-            // But that should be done differently, and the reset and close of the reader
-            // should be delegated to the Parser.
-            FileReader fileReader = new FileReader(inputFilePath);
-            this.reader = new BufferedReader(fileReader);
-
+            this.reader = createBufferedReader();
             Path inputPath = Paths.get(inputFilePath);
             int size = (int) Files.size(inputPath);
             this.reader.mark(size + 1);
@@ -51,13 +45,18 @@ public class Assembler {
         }
     }
 
+    BufferedReader createBufferedReader() throws FileNotFoundException {
+        FileReader fileReader = new FileReader(this.inputFilePath);
+        return new BufferedReader(fileReader);
+    }
+
     public void parseFile() {
         this.extractSymbols();
         this.parseCommands();
         try {
-            this.reader.close();
+            this.parser.close();
         } catch (IOException ex) {
-
+            System.out.println("Failed to close buffer.");
         }
     }
 
@@ -87,7 +86,10 @@ public class Assembler {
         }
 
         try {
-            parser.reset();
+            // We feed the Parser with a new buffer to reinitialize reading at the begining
+            // of the file.
+            BufferedReader newReader = this.createBufferedReader();
+            parser.setInputBuffer(newReader);
         } catch (IOException ex) {
             System.out.println("Failed to reset buffered reader");
             ex.printStackTrace();
