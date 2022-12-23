@@ -1,6 +1,6 @@
 {
-  "java.project.sourcePaths": ["projects/06/assembler/java"],
-  "java.project.outputPath": "projects/06/assembler/java-bin",
+  "java.project.sourcePaths": ["${workspaceFolder}/projects/assembler/java"],
+  "java.project.outputPath": "${workspaceFolder}/projects/assembler/java-bin",
   "java.dependency.packagePresentation": "hierarchical",
-  "java.project.exportJar.targetPath": "${workspaceFolder}/Assembler.jar"
+  "java.project.exportJar.targetPath": "${workspaceFolder}/projects/assembler/Assembler.jar"
 }

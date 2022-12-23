@@ -12,10 +12,11 @@
     },
     {
       "type": "java",
-      "name": "Launch Main",
+      "name": "Launch Assembler",
       "request": "launch",
       "mainClass": "assembler.Main",
-      "projectName": "nand2tetris_b5b22939",
+      "classPaths": ["${workspaceFolder}/projects/assembler/java-bin"],
+      "cwd": "${workspaceFolder}/projects/assembler/java",
       "args": "/home/max/Projects/nand2tetris/projects/06/max/Max.asm"
     }
   ]
