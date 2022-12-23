@@ -5,6 +5,17 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": ".NET VMTranslator",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-vmtranslator",
+      "program": "${workspaceFolder}/projects/vmtranslator/VMTranslator/bin/Debug/net7.0/VMTranslator.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/projects/vmtranslator/VMTranslator",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    },
+    {
       "type": "java",
       "name": "Launch Current File",
       "request": "launch",
