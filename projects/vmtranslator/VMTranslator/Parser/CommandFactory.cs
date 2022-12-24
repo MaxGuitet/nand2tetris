@@ -1,6 +1,6 @@
 public class CommandFactory
 {
-    static Command GetCommand(string commandString)
+    internal static Command GetCommand(string commandString)
     {
         string[] commandParts = commandString.Split(" ");
 
@@ -8,5 +8,12 @@ public class CommandFactory
         {
             return new ArithmeticCommand(commandParts);
         }
+
+        if (commandParts[0] == "push")
+        {
+            return new PushCommand(commandParts);
+        }
+
+        throw new InvalidCommandException($"Unknown command \"{commandString}\'");
     }
 }

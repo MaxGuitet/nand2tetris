@@ -1,6 +1,6 @@
-abstract class Command
+public abstract class Command
 {
-    protected CommandType type;
+    internal CommandType type;
 
-    public abstract string getAsmCode();
+    public abstract string GetAsmCode();
 }

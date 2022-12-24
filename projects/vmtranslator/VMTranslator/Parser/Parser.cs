@@ -1,16 +1,29 @@
+using System.Text;
 using System.Text.RegularExpressions;
 
 public class Parser
 {
     private StreamReader fileStream;
-    private string filePath;
     private string? nextLine;
 
     public Parser(string inputFilePath)
     {
-        filePath = inputFilePath;
         fileStream = new StreamReader(inputFilePath);
         InitParser();
+    }
+
+    public bool HasMoreCommands()
+    {
+        return nextLine != null;
+    }
+
+    public Command Advance()
+    {
+        Command currentCommand = CommandFactory.GetCommand(nextLine!);
+
+        ReadNextCommand();
+
+        return currentCommand;
     }
 
     private void InitParser()
@@ -46,6 +59,8 @@ public class Parser
             if (line == null)
             {
                 nextLine = null;
+                fileStream.Close();
+
                 return;
             }
 
@@ -56,15 +71,5 @@ public class Parser
         } while (isEmptyLine);
 
         nextLine = cleanLine;
-    }
-
-    public bool hasMoreCommands()
-    {
-        return nextLine != null;
-    }
-
-    public void advance()
-    {
-        currentCommand = CommandFactory.getCommand(nextLine);
     }
 }

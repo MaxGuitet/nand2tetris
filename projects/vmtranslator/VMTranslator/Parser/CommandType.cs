@@ -1,4 +1,4 @@
-enum CommandType
+internal enum CommandType
 {
     C_ARITHMETIC,
     C_PUSH,
