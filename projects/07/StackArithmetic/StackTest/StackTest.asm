@@ -399,7 +399,7 @@ D=M
 @SP
 M=M-1
 A=M
-D=D+M
+D=M+D
 @SP
 A=M
 M=D
@@ -435,7 +435,7 @@ D=-M
 M=D
 @SP
 M=M+1
-// and
+// add
 @SP
 M=M-1
 A=M
@@ -444,20 +444,9 @@ D=M
 M=M-1
 A=M
 D=M&D
-@TRUE9
-D;JGT
-@FALSE9
-0;JMP
-(TRUE9)
-  D=-1
-  @END9
-  0;JMP
-(FALSE9)
-  D=0
-(END9)
-  @SP
-  A=M
-  M=D
+@SP
+A=M
+M=D
 @SP
 M=M+1
 // push constant 82
@@ -468,7 +457,7 @@ A=M
 M=D
 @SP
 M=M+1
-// or
+// add
 @SP
 M=M-1
 A=M
@@ -477,20 +466,9 @@ D=M
 M=M-1
 A=M
 D=M|D
-@TRUE10
-D;JGT
-@FALSE10
-0;JMP
-(TRUE10)
-  D=-1
-  @END10
-  0;JMP
-(FALSE10)
-  D=0
-(END10)
-  @SP
-  A=M
-  M=D
+@SP
+A=M
+M=D
 @SP
 M=M+1
 // not

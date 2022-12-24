@@ -16,10 +16,10 @@ class ArithmeticCommand : Command
         switch (operation)
         {
             case "add":
-                return GetAdd();
+                return GetTwoFactorsOp("add", "+");
 
             case "sub":
-                return GetSub();
+                return GetTwoFactorsOp("add", "-");
 
             case "neg":
                 return GetNeg();
@@ -34,10 +34,12 @@ class ArithmeticCommand : Command
                 return GetComparison("lt", "-", "JLT");
 
             case "and":
-                return GetComparison("and", "&", "JGT");
+                return GetTwoFactorsOp("add", "&");
+            // return GetComparison("and", "&", "JGT");
 
             case "or":
-                return GetComparison("or", "|", "JGT");
+                return GetTwoFactorsOp("add", "|");
+            // return GetComparison("or", "|", "JGT");
 
             case "not":
                 return GetNot();
@@ -47,33 +49,16 @@ class ArithmeticCommand : Command
         }
     }
 
-    string GetAdd()
+    string GetTwoFactorsOp(string opType, string opString)
     {
         return JoinString(
-            "// add",
+            $"// {opType}",
             decrSP,
             "A=M",
             "D=M",
             decrSP,
             "A=M",
-            "D=D+M",
-            "@SP",
-            "A=M",
-            "M=D",
-            incrSP
-        );
-    }
-
-    string GetSub()
-    {
-        return JoinString(
-            "// add",
-            decrSP,
-            "A=M",
-            "D=M",
-            decrSP,
-            "A=M",
-            "D=M-D",
+            $"D=M{opString}D",
             "@SP",
             "A=M",
             "M=D",
@@ -93,11 +78,11 @@ class ArithmeticCommand : Command
         );
     }
 
-    string GetComparison(string type, string opSymbol, string jumpCondition)
+    string GetComparison(string opType, string opSymbol, string jumpCondition)
     {
         jumpIndex += 1;
         return JoinString(
-            $"// {type}",
+            $"// {opType}",
             decrSP,
             "A=M",
             "D=M",
