@@ -413,7 +413,7 @@ A=M
 M=D
 @SP
 M=M+1
-// add
+// sub
 @SP
 M=M-1
 A=M
@@ -435,7 +435,7 @@ D=-M
 M=D
 @SP
 M=M+1
-// add
+// and
 @SP
 M=M-1
 A=M
@@ -457,7 +457,7 @@ A=M
 M=D
 @SP
 M=M+1
-// add
+// or
 @SP
 M=M-1
 A=M

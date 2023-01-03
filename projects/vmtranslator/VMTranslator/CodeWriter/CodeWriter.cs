@@ -7,7 +7,7 @@ public class CodeWriter
         fileStream = new StreamWriter(outputFilePath);
     }
 
-    public void WriteCommand(Command command)
+    public void WriteCommand(ICommand command)
     {
         string asmCode = command.GetAsmCode();
         fileStream.WriteLine(asmCode);

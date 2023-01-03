@@ -25,7 +25,7 @@ public class VMTranslator
     {
         while (parser.HasMoreCommands())
         {
-            Command currentCommand = parser.Advance();
+            ICommand currentCommand = parser.Advance();
             writer.WriteCommand(currentCommand);
         }
 

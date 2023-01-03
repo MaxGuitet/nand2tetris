@@ -3,11 +3,13 @@ using System.Text.RegularExpressions;
 
 public class Parser
 {
+    private string fileName;
     private StreamReader fileStream;
     private string? nextLine;
 
     public Parser(string inputFilePath)
     {
+        fileName = Path.GetFileNameWithoutExtension(inputFilePath);
         fileStream = new StreamReader(inputFilePath);
         InitParser();
     }
@@ -17,9 +19,9 @@ public class Parser
         return nextLine != null;
     }
 
-    public Command Advance()
+    public ICommand Advance()
     {
-        Command currentCommand = CommandFactory.GetCommand(nextLine!);
+        ICommand currentCommand = CommandFactory.GetCommand(nextLine!, fileName);
 
         ReadNextCommand();
 

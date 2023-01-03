@@ -1,4 +1,4 @@
-class ArithmeticCommand : Command
+class ArithmeticCommand : ICommand
 {
     static int jumpIndex = -1;
     string incrSP = "@SP\nM=M+1";
@@ -19,7 +19,7 @@ class ArithmeticCommand : Command
                 return GetTwoFactorsOp("add", "+");
 
             case "sub":
-                return GetTwoFactorsOp("add", "-");
+                return GetTwoFactorsOp("sub", "-");
 
             case "neg":
                 return GetNeg();
@@ -34,12 +34,10 @@ class ArithmeticCommand : Command
                 return GetComparison("lt", "-", "JLT");
 
             case "and":
-                return GetTwoFactorsOp("add", "&");
-            // return GetComparison("and", "&", "JGT");
+                return GetTwoFactorsOp("and", "&");
 
             case "or":
-                return GetTwoFactorsOp("add", "|");
-            // return GetComparison("or", "|", "JGT");
+                return GetTwoFactorsOp("or", "|");
 
             case "not":
                 return GetNot();

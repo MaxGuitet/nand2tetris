@@ -1,4 +1,4 @@
-public abstract class Command
+public abstract class ICommand
 {
     internal CommandType type;
 

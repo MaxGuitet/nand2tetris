@@ -1,6 +1,6 @@
 public class CommandFactory
 {
-    internal static Command GetCommand(string commandString)
+    internal static ICommand GetCommand(string commandString, string fileName)
     {
         string[] commandParts = commandString.Split(" ");
 
@@ -11,7 +11,7 @@ public class CommandFactory
 
         if (commandParts[0] == "push")
         {
-            return new PushCommand(commandParts);
+            return new PushCommand(commandParts, fileName);
         }
 
         throw new InvalidCommandException($"Unknown command \"{commandString}\'");
