@@ -4,7 +4,6 @@ using System.Globalization;
 internal class PopCommand : ICommand
 {
     static string TEMP = "5";
-    string incrSP = "@SP\nM=M+1";
     string decrSP = "@SP\nM=M-1";
     string fileName;
     string[] parts;
@@ -69,7 +68,7 @@ internal class PopCommand : ICommand
                     throw new InvalidCommandException("temp segment overflow.");
                 }
 
-                return GetGeneric(segment, TEMP, element);
+                return GetTemp(element);
 
             default:
                 throw new Exception($"Unknown segment for pop instruction \"{segment}\".");
@@ -80,19 +79,54 @@ internal class PopCommand : ICommand
     {
         string[] words = {
             $"// pop {segmentName} {element}",
+            $"@{pointerName}",
+            "D=M",
+            $"@{element}",
+            "D=D+A",
+            // Store value in R13 for future use
+            // R13 does not belong to any segment and is free to use
+            "@R13",
+            "M=D",
             decrSP,
             // read last value on stack and store in D
             "@SP",
             "A=M",
             "D=M",
-            $"@{pointerName}",
-            "D=M",
+            "@R13",
+            // Go to address POINTER + i
+            "A=M",
+            // store value to pop
+            "M=D",
+
+        };
+        return JoinString(words);
+    }
+
+    // GetTemp is almost the same than GetGeneric, but the second instruction
+    // is D=A instead of D=M. 
+    // Indeed, we know that the TEMP segment starts at 5 but we don't have symbol for it
+    private string GetTemp(string element)
+    {
+        string[] words = {
+            $"// pop temp {element}",
+            $"@{TEMP}",
+            "D=A",
             $"@{element}",
             "D=D+A",
-            // Go to address POINTER + i
-            "A=D",
-            // store value to pop
+            // Store value in R13 for future use
+            // R13 does not belong to any segment and is free to use
+            "@R13",
+            "M=D",
+            decrSP,
+            // read last value on stack and store in D
+            "@SP",
+            "A=M",
             "D=M",
+            "@R13",
+            // Go to address POINTER + i
+            "A=M",
+            // store value to pop
+            "M=D",
 
         };
         return JoinString(words);

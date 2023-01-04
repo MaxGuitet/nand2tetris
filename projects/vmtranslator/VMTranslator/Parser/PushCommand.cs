@@ -71,7 +71,7 @@ internal class PushCommand : ICommand
                     throw new InvalidCommandException("temp segment overflow.");
                 }
 
-                return GetGeneric(segment, TEMP, element);
+                return GetTemp(element);
 
             default:
                 throw new Exception($"Unknown segment for push instruction \"{segment}\".");
@@ -84,6 +84,31 @@ internal class PushCommand : ICommand
             $"// push {segmentName} {element}",
             $"@{pointerName}",
             "D=M",
+            $"@{element}",
+            "D=D+A",
+            // Go to address POINTER + i
+            "A=D",
+            // store value to push
+            "D=M",
+            // push to stack
+            "@SP",
+            "A=M",
+            "M=D",
+            incrSP
+
+        };
+        return JoinString(words);
+    }
+
+    // GetTemp is almost the same than GetGeneric, but the second instruction
+    // is D=A instead of D=M. 
+    // Indeed, we know that the TEMP segment starts at 5 but we don't have symbol for it
+    string GetTemp(string element)
+    {
+        string[] words = {
+            $"// push temp {element}",
+            $"@5",
+            "D=A",
             $"@{element}",
             "D=D+A",
             // Go to address POINTER + i

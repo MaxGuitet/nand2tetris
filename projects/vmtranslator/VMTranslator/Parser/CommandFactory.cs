@@ -4,14 +4,21 @@ public class CommandFactory
     {
         string[] commandParts = commandString.Split(" ");
 
+        string instruction = commandParts[0];
+
         if (commandParts.Length == 1)
         {
             return new ArithmeticCommand(commandParts);
         }
 
-        if (commandParts[0] == "push")
+        if (instruction == "push")
         {
             return new PushCommand(commandParts, fileName);
+        }
+
+        if (instruction == "pop")
+        {
+            return new PopCommand(commandParts, fileName);
         }
 
         throw new InvalidCommandException($"Unknown command \"{commandString}\'");

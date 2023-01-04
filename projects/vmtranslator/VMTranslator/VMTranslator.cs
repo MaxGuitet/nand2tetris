@@ -6,7 +6,8 @@ public class VMTranslator
     private static CodeWriter writer;
     public static void Main(string[] args)
     {
-        string inputFilePath = "/home/max/Projects/nand2tetris/projects/07/StackArithmetic/StackTest/StackTest.vm";
+        // string inputFilePath = "/home/max/Projects/nand2tetris/projects/07/StackArithmetic/StackTest/StackTest.vm";
+        string inputFilePath = "/home/max/Projects/nand2tetris/projects/07/MemoryAccess/PointerTest/PointerTest.vm";
 
         if (!inputFilePath.EndsWith(".vm"))
         {
