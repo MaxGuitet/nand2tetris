@@ -11,15 +11,24 @@ public class CommandFactory
             return new ArithmeticCommand(commandParts);
         }
 
-        if (instruction == "push")
+        switch (instruction)
         {
-            return new PushCommand(commandParts, fileName);
+            case "push":
+                return new PushCommand(commandParts, fileName);
+
+            case "pop":
+                return new PopCommand(commandParts, fileName);
+
+            case "label":
+                return new LabelCommand(commandParts);
+
+            case "goto":
+                return new GotoCommand(commandParts);
+
+            case "if-goto":
+                return new IfgotoCommand(commandParts);
         }
 
-        if (instruction == "pop")
-        {
-            return new PopCommand(commandParts, fileName);
-        }
 
         throw new InvalidCommandException($"Unknown command \"{commandString}\'");
     }

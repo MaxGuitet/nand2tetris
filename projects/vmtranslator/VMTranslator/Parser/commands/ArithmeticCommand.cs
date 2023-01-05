@@ -120,10 +120,4 @@ class ArithmeticCommand : ICommand
             incrSP
         );
     }
-
-    string JoinString(params string[] words)
-    {
-        return string.Join("\n", words);
-    }
-
 }

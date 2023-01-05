@@ -1,15 +1,11 @@
-using System.ComponentModel;
-using System.Globalization;
-
-internal class PopCommand : ICommand
+internal class PushCommand : ICommand
 {
-    static string TEMP = "5";
-    string decrSP = "@SP\nM=M-1";
+    string incrSP = "@SP\nM=M+1";
     string fileName;
     string[] parts;
-    internal PopCommand(string[] commandParts, string fileName)
+    internal PushCommand(string[] commandParts, string fileName)
     {
-        type = CommandType.C_POP;
+        type = CommandType.C_PUSH;
         parts = commandParts;
         this.fileName = fileName;
     }
@@ -32,6 +28,9 @@ internal class PopCommand : ICommand
 
             case "that":
                 return GetGeneric(segment, "THAT", element);
+
+            case "constant":
+                return GetConstant();
 
             case "static":
                 {
@@ -71,32 +70,27 @@ internal class PopCommand : ICommand
                 return GetTemp(element);
 
             default:
-                throw new Exception($"Unknown segment for pop instruction \"{segment}\".");
+                throw new Exception($"Unknown segment for push instruction \"{segment}\".");
         }
     }
 
-    private string GetGeneric(string segmentName, string pointerName, string element)
+    string GetGeneric(string segmentName, string pointerName, string element)
     {
         string[] words = {
-            $"// pop {segmentName} {element}",
+            $"// push {segmentName} {element}",
             $"@{pointerName}",
             "D=M",
             $"@{element}",
             "D=D+A",
-            // Store value in R13 for future use
-            // R13 does not belong to any segment and is free to use
-            "@R13",
-            "M=D",
-            decrSP,
-            // read last value on stack and store in D
+            // Go to address POINTER + i
+            "A=D",
+            // store value to push
+            "D=M",
+            // push to stack
             "@SP",
             "A=M",
-            "D=M",
-            "@R13",
-            // Go to address POINTER + i
-            "A=M",
-            // store value to pop
             "M=D",
+            incrSP
 
         };
         return JoinString(words);
@@ -105,52 +99,59 @@ internal class PopCommand : ICommand
     // GetTemp is almost the same than GetGeneric, but the second instruction
     // is D=A instead of D=M. 
     // Indeed, we know that the TEMP segment starts at 5 but we don't have symbol for it
-    private string GetTemp(string element)
+    string GetTemp(string element)
     {
         string[] words = {
-            $"// pop temp {element}",
-            $"@{TEMP}",
+            $"// push temp {element}",
+            $"@5",
             "D=A",
             $"@{element}",
             "D=D+A",
-            // Store value in R13 for future use
-            // R13 does not belong to any segment and is free to use
-            "@R13",
-            "M=D",
-            decrSP,
-            // read last value on stack and store in D
+            // Go to address POINTER + i
+            "A=D",
+            // store value to push
+            "D=M",
+            // push to stack
             "@SP",
             "A=M",
-            "D=M",
-            "@R13",
-            // Go to address POINTER + i
-            "A=M",
-            // store value to pop
             "M=D",
+            incrSP
 
         };
         return JoinString(words);
     }
 
-    private string GetDirectMemoryValue(string segmentName, string pointerName, string element)
+    string GetDirectMemoryValue(string segmentName, string pointerName, string element)
     {
 
         string[] words = {
-            $"// pop {segmentName} {element}",
-            decrSP,
-            // store value to pop
+            $"// push {segmentName} {element}",
+            $"@{pointerName}",
+            // store value to push
+            "D=M",
+            // push to stack
             "@SP",
             "A=M",
-            "D=M",
-            // pop to segment
-            $"@{pointerName}",
-            "M=D"
+            "M=D",
+            incrSP
+
         };
         return JoinString(words);
     }
 
-    private string JoinString(params string[] words)
+    string GetConstant()
     {
-        return string.Join("\n", words);
+        string element = parts[2];
+        string[] words = {
+            $"// push constant {element}",
+            $"@{element}",
+            "D=A",
+            "@SP",
+            "A=M",
+            "M=D",
+            incrSP
+        };
+
+        return JoinString(words);
     }
 }

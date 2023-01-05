@@ -9,6 +9,11 @@ public class VMTranslator
         // string inputFilePath = "/home/max/Projects/nand2tetris/projects/07/StackArithmetic/StackTest/StackTest.vm";
         string inputFilePath = "/home/max/Projects/nand2tetris/projects/07/MemoryAccess/PointerTest/PointerTest.vm";
 
+        if (args.Length == 1)
+        {
+            inputFilePath = args[0];
+        }
+
         if (!inputFilePath.EndsWith(".vm"))
         {
             throw new IOException("Expecting a .vm file as input.");
