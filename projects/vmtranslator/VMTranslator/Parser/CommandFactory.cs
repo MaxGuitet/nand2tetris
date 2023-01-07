@@ -1,9 +1,7 @@
 public class CommandFactory
 {
-    internal static ICommand GetCommand(string commandString, string fileName)
+    internal static ICommand GetCommand(string[] commandParts, string fileName)
     {
-        string[] commandParts = commandString.Split(" ");
-
         string instruction = commandParts[0];
 
         if (commandParts.Length == 1)
@@ -30,6 +28,6 @@ public class CommandFactory
         }
 
 
-        throw new InvalidCommandException($"Unknown command \"{commandString}\'");
+        throw new InvalidCommandException($"Unknown command \"{string.Join(" ", commandParts)}\'");
     }
 }

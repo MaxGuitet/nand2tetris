@@ -2,8 +2,9 @@
 
 public class VMTranslator
 {
-    private static Parser parser;
-    private static CodeWriter writer;
+    private static Parser? parser;
+    private static CodeWriter? writer;
+    private static string currentFileName = "";
     public static void Main(string[] args)
     {
         // string inputFilePath = "/home/max/Projects/nand2tetris/projects/07/StackArithmetic/StackTest/StackTest.vm";
@@ -19,7 +20,8 @@ public class VMTranslator
             throw new IOException("Expecting a .vm file as input.");
         }
 
-        parser = new Parser(inputFilePath);
+        currentFileName = Path.GetFileNameWithoutExtension(inputFilePath);
+        parser = new Parser(inputFilePath, currentFileName);
 
         string outputFilePath = inputFilePath.Replace(".vm", ".asm");
         writer = new CodeWriter(outputFilePath);
@@ -29,9 +31,20 @@ public class VMTranslator
 
     private static void ParseFile()
     {
+        if (parser == null)
+        {
+            throw new Exception("No parser provided.");
+        }
+
+        if (writer == null)
+        {
+            throw new Exception("No writer provided.");
+        }
+
         while (parser.HasMoreCommands())
         {
-            ICommand currentCommand = parser.Advance();
+            string[] commandParts = parser.Advance();
+            ICommand currentCommand = CommandFactory.GetCommand(commandParts, currentFileName);
             writer.WriteCommand(currentCommand);
         }
 

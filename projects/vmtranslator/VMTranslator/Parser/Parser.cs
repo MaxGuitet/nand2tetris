@@ -1,4 +1,3 @@
-using System.Text;
 using System.Text.RegularExpressions;
 
 public class Parser
@@ -7,9 +6,9 @@ public class Parser
     private StreamReader fileStream;
     private string? nextLine;
 
-    public Parser(string inputFilePath)
+    public Parser(string inputFilePath, string fileName)
     {
-        fileName = Path.GetFileNameWithoutExtension(inputFilePath);
+        this.fileName = fileName;
         fileStream = new StreamReader(inputFilePath);
         InitParser();
     }
@@ -19,13 +18,18 @@ public class Parser
         return nextLine != null;
     }
 
-    public ICommand Advance()
+    public string[] Advance()
     {
-        ICommand currentCommand = CommandFactory.GetCommand(nextLine!, fileName);
+        if (nextLine == null)
+        {
+            throw new Exception("Missing line to read.");
+        }
+
+        string[] commandParts = nextLine.Split(" ");
 
         ReadNextCommand();
 
-        return currentCommand;
+        return commandParts;
     }
 
     private void InitParser()
