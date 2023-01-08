@@ -4,27 +4,39 @@ public class CommandFactory
     {
         string instruction = commandParts[0];
 
-        if (commandParts.Length == 1)
+        ArithmeticOperation arithmeticOperation;
+        if (Enum.TryParse<ArithmeticOperation>(instruction, out arithmeticOperation))
         {
-            return new ArithmeticCommand(commandParts);
+            return new ArithmeticCommand(arithmeticOperation);
         }
 
         switch (instruction)
         {
             case "push":
-                return new PushCommand(commandParts, fileName);
+                return new PushCommand(commandParts[1], commandParts[2], fileName);
 
             case "pop":
-                return new PopCommand(commandParts, fileName);
+                return new PopCommand(commandParts[1], commandParts[2], fileName);
 
             case "label":
-                return new LabelCommand(commandParts);
+                return new LabelCommand(commandParts[1]);
 
             case "goto":
-                return new GotoCommand(commandParts);
+                return new GotoCommand(commandParts[1]);
 
             case "if-goto":
-                return new IfgotoCommand(commandParts);
+                return new IfgotoCommand(commandParts[1]);
+
+            case "function":
+                int nLocals = int.Parse(commandParts[2]);
+                return new FunctionCommand(commandParts[1], nLocals);
+
+            case "call":
+                int nArgs = int.Parse(commandParts[2]);
+                return new CallCommand(commandParts[1], nArgs, fileName);
+
+            case "return":
+                return new ReturnCommand();
         }
 
 

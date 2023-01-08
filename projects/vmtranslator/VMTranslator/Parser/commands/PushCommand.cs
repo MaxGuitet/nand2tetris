@@ -1,20 +1,26 @@
 internal class PushCommand : ICommand
 {
-    string incrSP = "@SP\nM=M+1";
-    string fileName;
-    string[] parts;
-    internal PushCommand(string[] commandParts, string fileName)
+    private string incrSP = "@SP\nM=M+1";
+    private string pushToSP = "@SP\nA=M\nM=D";
+    private string fileName;
+    private string segment;
+    private string element;
+
+    internal PushCommand(string segment, string element, string fileName)
     {
         type = CommandType.C_PUSH;
-        parts = commandParts;
+        this.segment = segment;
+        this.element = element;
         this.fileName = fileName;
     }
 
+    internal PushCommand(string segment, string element) : this(segment, element, "")
+    {
+    }
+
+
     public override string GetAsmCode()
     {
-        string segment = parts[1];
-        string element = parts[2];
-
         switch (segment)
         {
             case "local":
@@ -87,9 +93,7 @@ internal class PushCommand : ICommand
             // store value to push
             "D=M",
             // push to stack
-            "@SP",
-            "A=M",
-            "M=D",
+            pushToSP,
             incrSP
 
         };
@@ -112,9 +116,7 @@ internal class PushCommand : ICommand
             // store value to push
             "D=M",
             // push to stack
-            "@SP",
-            "A=M",
-            "M=D",
+            pushToSP,
             incrSP
 
         };
@@ -130,9 +132,7 @@ internal class PushCommand : ICommand
             // store value to push
             "D=M",
             // push to stack
-            "@SP",
-            "A=M",
-            "M=D",
+            pushToSP,
             incrSP
 
         };
@@ -141,14 +141,11 @@ internal class PushCommand : ICommand
 
     string GetConstant()
     {
-        string element = parts[2];
         string[] words = {
             $"// push constant {element}",
             $"@{element}",
             "D=A",
-            "@SP",
-            "A=M",
-            "M=D",
+            pushToSP,
             incrSP
         };
 

@@ -1,11 +1,11 @@
 internal class GotoCommand : ICommand
 {
-    string label;
+    private string label;
 
-    internal GotoCommand(string[] commandParts)
+    internal GotoCommand(string label)
     {
         type = CommandType.C_GOTO;
-        label = commandParts[1];
+        this.label = label;
     }
 
     public override string GetAsmCode()

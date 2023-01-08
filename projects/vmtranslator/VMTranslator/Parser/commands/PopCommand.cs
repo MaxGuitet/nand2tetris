@@ -1,21 +1,21 @@
 internal class PopCommand : ICommand
 {
-    static string TEMP = "5";
-    string decrSP = "@SP\nM=M-1";
-    string fileName;
-    string[] parts;
-    internal PopCommand(string[] commandParts, string fileName)
+    private static string TEMP = "5";
+    private string decrSP = "@SP\nM=M-1";
+    private string fileName;
+    private string segment;
+    private string element;
+
+    internal PopCommand(string segment, string element, string fileName)
     {
         type = CommandType.C_POP;
-        parts = commandParts;
+        this.segment = segment;
+        this.element = element;
         this.fileName = fileName;
     }
 
     public override string GetAsmCode()
     {
-        string segment = parts[1];
-        string element = parts[2];
-
         switch (segment)
         {
             case "local":

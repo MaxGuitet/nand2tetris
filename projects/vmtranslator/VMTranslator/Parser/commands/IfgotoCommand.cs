@@ -1,11 +1,11 @@
 class IfgotoCommand : ICommand
 {
-    string label;
+    private string label;
 
-    internal IfgotoCommand(string[] commandParts)
+    internal IfgotoCommand(string label)
     {
         type = CommandType.C_GOTO;
-        label = commandParts[1];
+        this.label = label;
     }
 
     public override string GetAsmCode()

@@ -4,46 +4,46 @@ class ArithmeticCommand : ICommand
     string incrSP = "@SP\nM=M+1";
     string decrSP = "@SP\nM=M-1";
 
-    string operation;
+    ArithmeticOperation operation;
 
-    internal ArithmeticCommand(string[] commandParts)
+    internal ArithmeticCommand(ArithmeticOperation operation)
     {
         type = CommandType.C_ARITHMETIC;
-        operation = commandParts[0];
+        this.operation = operation;
     }
     public override string GetAsmCode()
     {
         switch (operation)
         {
-            case "add":
+            case ArithmeticOperation.add:
                 return GetTwoFactorsOp("add", "+");
 
-            case "sub":
+            case ArithmeticOperation.sub:
                 return GetTwoFactorsOp("sub", "-");
 
-            case "neg":
+            case ArithmeticOperation.neg:
                 return GetNeg();
 
-            case "eq":
+            case ArithmeticOperation.eq:
                 return GetComparison("eq", "-", "JEQ");
 
-            case "gt":
+            case ArithmeticOperation.gt:
                 return GetComparison("gt", "-", "JGT");
 
-            case "lt":
+            case ArithmeticOperation.lt:
                 return GetComparison("lt", "-", "JLT");
 
-            case "and":
+            case ArithmeticOperation.and:
                 return GetTwoFactorsOp("and", "&");
 
-            case "or":
+            case ArithmeticOperation.or:
                 return GetTwoFactorsOp("or", "|");
 
-            case "not":
+            case ArithmeticOperation.not:
                 return GetNot();
 
             default:
-                throw new InvalidCommandException($"Unknown arithmetic operation \"operation\"");
+                throw new InvalidCommandException($"Unknown arithmetic operation \"{operation}\"");
         }
     }
 

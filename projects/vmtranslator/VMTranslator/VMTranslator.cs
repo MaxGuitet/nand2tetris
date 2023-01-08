@@ -5,10 +5,11 @@ public class VMTranslator
     private static Parser? parser;
     private static CodeWriter? writer;
     private static string currentFileName = "";
+    private static string inputFilePath = "";
+
     public static void Main(string[] args)
     {
-        // string inputFilePath = "/home/max/Projects/nand2tetris/projects/07/StackArithmetic/StackTest/StackTest.vm";
-        string inputFilePath = "/home/max/Projects/nand2tetris/projects/07/MemoryAccess/PointerTest/PointerTest.vm";
+        // string inputFilePath = "/home/max/Projects/nand2tetris/projects/07/MemoryAccess/PointerTest/PointerTest.vm";
 
         if (args.Length == 1)
         {

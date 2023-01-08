@@ -1,11 +1,11 @@
 internal class LabelCommand : ICommand
 {
-    string label;
+    private string label;
 
-    internal LabelCommand(string[] commandParts)
+    internal LabelCommand(string label)
     {
         type = CommandType.C_GOTO;
-        label = commandParts[1];
+        this.label = label;
     }
 
     public override string GetAsmCode()
