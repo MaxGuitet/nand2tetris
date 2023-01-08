@@ -6,7 +6,7 @@ internal class PopCommand : ICommand
     private string segment;
     private string element;
 
-    internal PopCommand(string segment, string element, string fileName)
+    internal PopCommand(string segment, string element, string fileName = "")
     {
         type = CommandType.C_POP;
         this.segment = segment;

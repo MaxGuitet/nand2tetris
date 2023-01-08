@@ -1,45 +1,46 @@
-﻿using System;
-
-public class VMTranslator
+﻿public class VMTranslator
 {
-    private static Parser? parser;
     private static CodeWriter? writer;
     private static string currentFileName = "";
-    private static string inputFilePath = "";
+    private static string inputPath = "";
 
     public static void Main(string[] args)
     {
-        // string inputFilePath = "/home/max/Projects/nand2tetris/projects/07/MemoryAccess/PointerTest/PointerTest.vm";
+        inputPath = Path.GetFullPath("/home/max/Projects/nand2tetris/projects/08/FunctionCalls/NestedCall");
 
         if (args.Length == 1)
         {
-            inputFilePath = args[0];
+            inputPath = Path.GetFullPath(args[0]);
         }
 
-        if (!inputFilePath.EndsWith(".vm"))
-        {
-            throw new IOException("Expecting a .vm file as input.");
-        }
+        string[] files = IoUtils.ExtractFiles(inputPath, ".vm");
+        string outputFileName = IoUtils.GetOutputFilePath(inputPath, ".asm");
 
-        currentFileName = Path.GetFileNameWithoutExtension(inputFilePath);
-        parser = new Parser(inputFilePath, currentFileName);
+        writer = new CodeWriter(outputFileName);
 
-        string outputFilePath = inputFilePath.Replace(".vm", ".asm");
-        writer = new CodeWriter(outputFilePath);
+        // writer.AddBootstrapCode();
 
-        ParseFile();
+        ParseFiles(files);
+
+        writer.End();
     }
 
-    private static void ParseFile()
+    private static void ParseFiles(string[] files)
     {
-        if (parser == null)
+        foreach (string file in files)
         {
-            throw new Exception("No parser provided.");
+            ParseFile(file);
         }
+    }
+
+    private static void ParseFile(string filePath)
+    {
+        currentFileName = Path.GetFileNameWithoutExtension(filePath);
+        Parser parser = new Parser(filePath, currentFileName);
 
         if (writer == null)
         {
-            throw new Exception("No writer provided.");
+            throw new Exception("Missing writer.");
         }
 
         while (parser.HasMoreCommands())
@@ -48,7 +49,5 @@ public class VMTranslator
             ICommand currentCommand = CommandFactory.GetCommand(commandParts, currentFileName);
             writer.WriteCommand(currentCommand);
         }
-
-        writer.End();
     }
 }

@@ -1,7 +1,7 @@
 class CallCommand : ICommand
 {
     private string incrSP = "@SP\nM=M+1";
-    private string pushToSP = "@SP\nA=M\nM=D";
+    private string pushDToSP = "@SP\nA=M\nM=D";
     private static int index = -1;
     private string functionName;
     private int nArgs;
@@ -45,7 +45,7 @@ class CallCommand : ICommand
             $"// push return address for @{label}",
             $"@{label}",
             "D=A",
-            pushToSP,
+            pushDToSP,
             incrSP
         };
 
@@ -58,7 +58,7 @@ class CallCommand : ICommand
             $"// push {pointer}",
             $"@{pointer}",
             "D=M",
-            pushToSP,
+            pushDToSP,
             incrSP
 };
         return JoinString(words);
@@ -66,23 +66,24 @@ class CallCommand : ICommand
 
     private string SetArgPosition()
     {
-        string[] words = { 
-            // Set ARG position
+        List<string> words = new List<string>()
+        {
+            "// Set ARG position",
             "@SP",
-            "D=A",
+            "D=M",
             "@5",
             "D=D-A",
         };
 
-        for (int i = 0; i < nArgs; i++) { }
+        for (int i = 0; i < nArgs; i++)
         {
-            words.Append("D=D-1");
+            words.Add("D=D-1");
         }
 
-        words.Append("@ARG");
-        words.Append("M=D");
+        words.Add("@ARG");
+        words.Add("M=D");
 
-        return JoinString(words);
+        return JoinString(words.ToArray<string>());
     }
 
     private string SetNewLCL()

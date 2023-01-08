@@ -1,5 +1,6 @@
 class FunctionCommand : ICommand
 {
+    private string incrSP = "@SP\nM=M+1";
     private string functionName;
     private int nLocals;
 
@@ -20,11 +21,12 @@ class FunctionCommand : ICommand
         return JoinString(words);
     }
 
-    private string PushZero()
+    private string PushZero(int varNumber = 0)
     {
-        PushCommand push = new PushCommand("local", "0");
+        PushCommand push0 = new PushCommand("constant", "0");
+        PopCommand popLocal = new PopCommand("local", $"{varNumber}");
 
-        return push.GetAsmCode();
+        return push0.GetAsmCode() + "\n" + popLocal.GetAsmCode() + "\n" + incrSP;
     }
 
     private string RepeatPushZero(int n)
@@ -33,7 +35,7 @@ class FunctionCommand : ICommand
 
         for (int i = 0; i < n; i++)
         {
-            words[i] = PushZero();
+            words[i] = PushZero(i);
         }
 
         return JoinString(words);

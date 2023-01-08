@@ -81,6 +81,7 @@ class ReturnCommand : ICommand
             "// go to return address",
             "@R14",
             "A=M",
+            "0;JMP"
         };
 
         return JoinString(words);

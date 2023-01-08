@@ -1,3 +1,11 @@
+@317
+D=A
+@SP
+M=D
+@LCL
+M=D
+@Sys.init
+0;JMP
 // function SimpleFunction.test 2
 (SimpleFunction.test)
 // push local 0

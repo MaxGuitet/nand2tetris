@@ -19,10 +19,10 @@ public class CommandFactory
                 return new PopCommand(commandParts[1], commandParts[2], fileName);
 
             case "label":
-                return new LabelCommand(commandParts[1]);
+                return new LabelCommand($"{fileName}${commandParts[1]}");
 
             case "goto":
-                return new GotoCommand(commandParts[1]);
+                return new GotoCommand($"{fileName}${commandParts[1]}");
 
             case "if-goto":
                 return new IfgotoCommand(commandParts[1]);
