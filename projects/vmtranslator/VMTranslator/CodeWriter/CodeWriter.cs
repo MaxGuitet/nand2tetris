@@ -16,8 +16,10 @@ public class CodeWriter
         // Initialize LCL = SP. We have the current SP value in D, simply assign it.
         fileStream.WriteLine("@LCL");
         fileStream.WriteLine("M=D");
-        fileStream.WriteLine("@Sys.init");
-        fileStream.WriteLine("0;JMP");
+
+        CallCommand callSysInit = new CallCommand("Sys.init", 0, "Sys");
+
+        fileStream.WriteLine(callSysInit.GetAsmCode());
     }
 
     public void WriteCommand(ICommand command)

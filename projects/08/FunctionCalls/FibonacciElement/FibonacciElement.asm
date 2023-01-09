@@ -4,8 +4,62 @@ D=A
 M=D
 @LCL
 M=D
+// call Sys.init 0
+// push return address for @Sys$ret0
+@Sys$ret0
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+// push LCL
+@LCL
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+// push ARG
+@ARG
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+// push THIS
+@THIS
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+// push THAT
+@THAT
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+// Set ARG position
+@SP
+D=M
+@5
+D=D-A
+@ARG
+M=D
+// Set new LCL value
+@SP
+D=M
+@LCL
+M=D
 @Sys.init
 0;JMP
+(Sys$ret0)
 // function Main.fibonacci 0
 (Main.fibonacci)
 
@@ -58,9 +112,9 @@ M=M+1
 M=M-1
 A=M
 D=M
-@IF_TRUE
+@Main$IF_TRUE
 D;JNE
-@IF_FALSE
+@Main$IF_FALSE
 0;JMP
 (Main$IF_TRUE)
 // push argument 0
@@ -136,6 +190,7 @@ M=D
 // go to return address
 @R14
 A=M
+0;JMP
 (Main$IF_FALSE)
 // push argument 0
 @ARG
@@ -151,97 +206,6 @@ M=D
 M=M+1
 // push constant 2
 @2
-D=A
-@SP
-A=M
-M=D
-@SP
-M=M+1
-// sub
-@SP
-M=M-1
-A=M
-D=M
-@SP
-M=M-1
-A=M
-D=M-D
-@SP
-A=M
-M=D
-@SP
-M=M+1
-// call Main.fibonacci 1
-// push return address for @Main$ret0
-@Main$ret0
-D=A
-@SP
-A=M
-M=D
-@SP
-M=M+1
-// push LCL
-@LCL
-D=M
-@SP
-A=M
-M=D
-@SP
-M=M+1
-// push ARG
-@ARG
-D=M
-@SP
-A=M
-M=D
-@SP
-M=M+1
-// push THIS
-@THIS
-D=M
-@SP
-A=M
-M=D
-@SP
-M=M+1
-// push THAT
-@THAT
-D=M
-@SP
-A=M
-M=D
-@SP
-M=M+1
-// Set ARG position
-@SP
-D=M
-@5
-D=D-A
-D=D-1
-@ARG
-M=D
-// Set new LCL value
-@SP
-D=M
-@LCL
-M=D
-@Main.fibonacci
-0;JMP
-(Main$ret0)
-// push argument 0
-@ARG
-D=M
-@0
-D=D+A
-A=D
-D=M
-@SP
-A=M
-M=D
-@SP
-M=M+1
-// push constant 1
-@1
 D=A
 @SP
 A=M
@@ -319,6 +283,97 @@ M=D
 @Main.fibonacci
 0;JMP
 (Main$ret1)
+// push argument 0
+@ARG
+D=M
+@0
+D=D+A
+A=D
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+// push constant 1
+@1
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+// sub
+@SP
+M=M-1
+A=M
+D=M
+@SP
+M=M-1
+A=M
+D=M-D
+@SP
+A=M
+M=D
+@SP
+M=M+1
+// call Main.fibonacci 1
+// push return address for @Main$ret2
+@Main$ret2
+D=A
+@SP
+A=M
+M=D
+@SP
+M=M+1
+// push LCL
+@LCL
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+// push ARG
+@ARG
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+// push THIS
+@THIS
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+// push THAT
+@THAT
+D=M
+@SP
+A=M
+M=D
+@SP
+M=M+1
+// Set ARG position
+@SP
+D=M
+@5
+D=D-A
+D=D-1
+@ARG
+M=D
+// Set new LCL value
+@SP
+D=M
+@LCL
+M=D
+@Main.fibonacci
+0;JMP
+(Main$ret2)
 // add
 @SP
 M=M-1
@@ -394,6 +449,7 @@ M=D
 // go to return address
 @R14
 A=M
+0;JMP
 // function Sys.init 0
 (Sys.init)
 
@@ -406,8 +462,8 @@ M=D
 @SP
 M=M+1
 // call Main.fibonacci 1
-// push return address for @Sys$ret2
-@Sys$ret2
+// push return address for @Sys$ret3
+@Sys$ret3
 D=A
 @SP
 A=M
@@ -461,7 +517,7 @@ D=M
 M=D
 @Main.fibonacci
 0;JMP
-(Sys$ret2)
+(Sys$ret3)
 (Sys$WHILE)
-@WHILE
+@Sys$WHILE
 0;JMP

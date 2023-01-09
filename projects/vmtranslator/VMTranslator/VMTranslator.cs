@@ -18,7 +18,7 @@
 
         writer = new CodeWriter(outputFileName);
 
-        // writer.AddBootstrapCode();
+        writer.AddBootstrapCode();
 
         ParseFiles(files);
 

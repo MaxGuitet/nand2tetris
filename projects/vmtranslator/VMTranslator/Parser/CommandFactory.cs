@@ -25,7 +25,7 @@ public class CommandFactory
                 return new GotoCommand($"{fileName}${commandParts[1]}");
 
             case "if-goto":
-                return new IfgotoCommand(commandParts[1]);
+                return new IfgotoCommand($"{fileName}${commandParts[1]}");
 
             case "function":
                 int nLocals = int.Parse(commandParts[2]);
