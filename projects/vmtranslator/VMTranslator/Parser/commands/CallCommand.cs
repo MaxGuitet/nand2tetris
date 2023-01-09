@@ -36,7 +36,7 @@ class CallCommand : ICommand
     private string GetRetAddrLabel()
     {
         index += 1;
-        return $"{fileName}$ret{index}";
+        return LabelUtils.GetLabel($"ret{index}", fileName, functionName);
     }
 
     private string PushRetAddrLabel(string label)

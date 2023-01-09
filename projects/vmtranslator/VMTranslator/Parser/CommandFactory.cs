@@ -19,13 +19,23 @@ public class CommandFactory
                 return new PopCommand(commandParts[1], commandParts[2], fileName);
 
             case "label":
-                return new LabelCommand($"{fileName}${commandParts[1]}");
+                {
+
+                    string label = LabelUtils.GetLabel(commandParts[1], fileName, FunctionCommand.currentFunctionName);
+                    return new LabelCommand(label);
+                }
 
             case "goto":
-                return new GotoCommand($"{fileName}${commandParts[1]}");
+                {
+                    string label = LabelUtils.GetLabel(commandParts[1], fileName, FunctionCommand.currentFunctionName);
+                    return new GotoCommand(label);
+                }
 
             case "if-goto":
-                return new IfgotoCommand($"{fileName}${commandParts[1]}");
+                {
+                    string label = LabelUtils.GetLabel(commandParts[1], fileName, FunctionCommand.currentFunctionName);
+                    return new IfgotoCommand(label);
+                }
 
             case "function":
                 int nLocals = int.Parse(commandParts[2]);

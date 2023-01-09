@@ -1,11 +1,13 @@
 class FunctionCommand : ICommand
 {
+    internal static string currentFunctionName = "";
     private string incrSP = "@SP\nM=M+1";
     private string functionName;
     private int nLocals;
 
     public FunctionCommand(string functionName, int nLocals)
     {
+        currentFunctionName = functionName;
         this.functionName = functionName;
         this.nLocals = nLocals;
     }

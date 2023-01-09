@@ -5,8 +5,8 @@ M=D
 @LCL
 M=D
 // call Sys.init 0
-// push return address for @Sys$ret0
-@Sys$ret0
+// push return address for @Sys.init$ret0
+@Sys.init$ret0
 D=A
 @SP
 A=M
@@ -59,7 +59,7 @@ D=M
 M=D
 @Sys.init
 0;JMP
-(Sys$ret0)
+(Sys.init$ret0)
 // function Main.fibonacci 0
 (Main.fibonacci)
 
@@ -112,11 +112,11 @@ M=M+1
 M=M-1
 A=M
 D=M
-@Main$IF_TRUE
+@Main.fibonacci$IF_TRUE
 D;JNE
-@Main$IF_FALSE
+@Main.fibonacci$IF_FALSE
 0;JMP
-(Main$IF_TRUE)
+(Main.fibonacci$IF_TRUE)
 // push argument 0
 @ARG
 D=M
@@ -191,7 +191,7 @@ M=D
 @R14
 A=M
 0;JMP
-(Main$IF_FALSE)
+(Main.fibonacci$IF_FALSE)
 // push argument 0
 @ARG
 D=M
@@ -227,8 +227,8 @@ M=D
 @SP
 M=M+1
 // call Main.fibonacci 1
-// push return address for @Main$ret1
-@Main$ret1
+// push return address for @Main.fibonacci$ret1
+@Main.fibonacci$ret1
 D=A
 @SP
 A=M
@@ -282,7 +282,7 @@ D=M
 M=D
 @Main.fibonacci
 0;JMP
-(Main$ret1)
+(Main.fibonacci$ret1)
 // push argument 0
 @ARG
 D=M
@@ -318,8 +318,8 @@ M=D
 @SP
 M=M+1
 // call Main.fibonacci 1
-// push return address for @Main$ret2
-@Main$ret2
+// push return address for @Main.fibonacci$ret2
+@Main.fibonacci$ret2
 D=A
 @SP
 A=M
@@ -373,7 +373,7 @@ D=M
 M=D
 @Main.fibonacci
 0;JMP
-(Main$ret2)
+(Main.fibonacci$ret2)
 // add
 @SP
 M=M-1
@@ -462,8 +462,8 @@ M=D
 @SP
 M=M+1
 // call Main.fibonacci 1
-// push return address for @Sys$ret3
-@Sys$ret3
+// push return address for @Main.fibonacci$ret3
+@Main.fibonacci$ret3
 D=A
 @SP
 A=M
@@ -517,7 +517,7 @@ D=M
 M=D
 @Main.fibonacci
 0;JMP
-(Sys$ret3)
-(Sys$WHILE)
-@Sys$WHILE
+(Main.fibonacci$ret3)
+(Sys.init$WHILE)
+@Sys.init$WHILE
 0;JMP
