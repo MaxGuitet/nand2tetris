@@ -9,7 +9,7 @@ class KeywordToken : IToken
         }
         catch (Exception ex)
         {
-            throw new JackSyntaxException($"Unknown keyword {keyword}.", ex);
+            throw new JackSyntaxException($"Unknown keyword \"{keyword}\".", ex);
         }
     }
 

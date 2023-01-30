@@ -16,6 +16,17 @@
       "console": "internalConsole"
     },
     {
+      "name": ".NET Compiler",
+      "type": "coreclr",
+      "request": "launch",
+      "preLaunchTask": "build-compiler",
+      "program": "${workspaceFolder}/projects/Compiler/bin/Debug/net7.0/Compiler.dll",
+      "args": [],
+      "cwd": "${workspaceFolder}/projects/Compiler",
+      "stopAtEntry": false,
+      "console": "internalConsole"
+    },
+    {
       "type": "java",
       "name": "Launch Current File",
       "request": "launch",

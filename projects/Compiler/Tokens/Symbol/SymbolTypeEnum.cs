@@ -1,0 +1,22 @@
+public enum SymbolTypeEnum
+{
+    CURLY_BRACKETS_OPEN,
+    CURLY_BRACKETS_CLOSE,
+    PAREN_OPEN,
+    PAREN_CLOSE,
+    SQUARE_BRACKETS_OPEN,
+    SQUARE_BRACKETS_CLOSE,
+    DOT,
+    COMMA,
+    SEMI_COLON,
+    PLUS,
+    MINUS,
+    TIMES,
+    DIVIDE,
+    AMP,
+    PIPE,
+    LT,
+    GT,
+    EQUAL,
+    NOT
+}

@@ -18,9 +18,9 @@ internal static class IoUtils
         if (File.Exists(inputPath))
         {
             // check if the file is a .vm file
-            if (!inputPath.EndsWith(".vm"))
+            if (!inputPath.EndsWith(".jack"))
             {
-                throw new IOException("Expecting a .vm file as input.");
+                throw new IOException("Expecting a .jack file as input.");
             }
 
             return new string[] { inputPath };
