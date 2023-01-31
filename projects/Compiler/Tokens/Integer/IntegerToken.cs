@@ -18,7 +18,7 @@ public class IntegerToken : IToken
 
     public override string GetXMLCode()
     {
-        throw new NotImplementedException();
+        return $"<constant>{value}</constant>";
     }
 
     public static bool TryParse(string word, [MaybeNullWhen(false)] out IntegerToken token)
@@ -30,8 +30,10 @@ public class IntegerToken : IToken
             return false;
         }
 
-        bool isValid = Int32.TryParse(word, out _);
-        if (isValid)
+        short intValue;
+        bool isValid = Int16.TryParse(word, out intValue);
+
+        if (isValid && intValue > 0)
         {
             token = new IntegerToken(word);
         }

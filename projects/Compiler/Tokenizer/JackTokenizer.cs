@@ -167,6 +167,8 @@ class JackTokenizer
             return symbolToken;
         }
 
+        StringToken? stringToken = CheckStringToken(word);
+
         // Can only parse int and identifiers if full words
         if (fullWord)
         {
@@ -201,6 +203,33 @@ class JackTokenizer
         {
             return match;
         }
+        return null;
+
+    }
+
+    private StringToken? CheckStringToken(string word)
+    {
+        if (word[0] != '"')
+        {
+            return null;
+        }
+
+        string fullString = "\"";
+
+        while ((char)fileStream.Peek() != '"')
+        {
+            fullString += (char)fileStream.Read();
+        }
+
+        // When we go out of the loop, we still have the last `"` to read.
+        fullString += (char)fileStream.Read();
+
+        StringToken? match;
+        if (StringToken.TryParse(fullString, out match))
+        {
+            return match;
+        }
+
         return null;
 
     }
