@@ -1,11 +1,11 @@
 class KeywordToken : IToken
 {
-    KeywordType keywordType;
+    KeywordTypeEnum keywordType;
     public KeywordToken(string keyword)
     {
         try
         {
-            keywordType = Enum.Parse<KeywordType>(keyword.ToUpper());
+            keywordType = Enum.Parse<KeywordTypeEnum>(keyword.ToUpper());
         }
         catch (Exception ex)
         {
@@ -15,6 +15,6 @@ class KeywordToken : IToken
 
     public override string GetXMLCode()
     {
-        return $"<keyword>{Enum.GetName<KeywordType>(keywordType).ToLower()}</keyword>";
+        return $"<keyword>{Enum.GetName<KeywordTypeEnum>(keywordType).ToLower()}</keyword>";
     }
 }

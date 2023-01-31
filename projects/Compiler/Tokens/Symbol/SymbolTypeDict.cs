@@ -1,6 +1,4 @@
-using System.Diagnostics.CodeAnalysis;
-
-public class SymbolType
+public class SymbolTypeDict
 {
     private static Dictionary<char, SymbolTypeEnum> SymbolsToEnum = new Dictionary<char, SymbolTypeEnum>
     {
@@ -52,27 +50,6 @@ public class SymbolType
     public static char GetSymbolFromEnum(SymbolTypeEnum symbol)
     {
         return EnumToSymbols.GetValueOrDefault(symbol);
-    }
-
-    public static bool TryParse(string symbol, out SymbolTypeEnum outVar)
-    {
-        outVar = default;
-
-        if (symbol.Length > 1)
-        {
-            return false;
-        }
-
-        SymbolTypeEnum match;
-        bool isMatch = Enum.TryParse<SymbolTypeEnum>(symbol, true, out match);
-
-        if (isMatch)
-        {
-            outVar = match;
-            return true;
-        }
-
-        return false;
     }
 };
 

@@ -1,4 +1,4 @@
-enum KeywordType
+enum KeywordTypeEnum
 {
     CLASS,
     CONSTRUCTOR,
