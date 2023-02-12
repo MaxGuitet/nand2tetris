@@ -4,6 +4,9 @@ using System.Text.RegularExpressions;
 public class StringToken : IToken
 {
     private string value;
+
+    internal override TokenType type => TokenType.STRING_CONST;
+
     public StringToken(string word)
     {
         // Remove starting and ending `"`

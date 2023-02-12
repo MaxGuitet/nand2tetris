@@ -6,6 +6,8 @@ public class IdentifierToken : IToken
     static string regex = "[a-zA-Z_][a-zA-Z0-9_]*";
     string value;
 
+    internal override TokenType type => TokenType.IDENTIFIER;
+
     public static bool TestRegex(string testString)
     {
         return Regex.IsMatch(testString, regex);

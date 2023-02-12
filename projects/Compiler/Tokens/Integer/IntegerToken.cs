@@ -16,6 +16,8 @@ public class IntegerToken : IToken
 
     public int Value { get => value; }
 
+    internal override TokenType type => TokenType.INT_CONST;
+
     public override string GetXMLCode()
     {
         return $"<constant>{value}</constant>";
@@ -33,7 +35,7 @@ public class IntegerToken : IToken
         short intValue;
         bool isValid = Int16.TryParse(word, out intValue);
 
-        if (isValid && intValue > 0)
+        if (isValid && intValue >= 0)
         {
             token = new IntegerToken(word);
         }

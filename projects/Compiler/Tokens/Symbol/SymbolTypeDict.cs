@@ -51,5 +51,15 @@ public class SymbolTypeDict
     {
         return EnumToSymbols.GetValueOrDefault(symbol);
     }
+
+    public static SymbolTypeEnum? GetEnumFromSymbol(char symbol)
+    {
+        if (SymbolsToEnum.ContainsKey(symbol))
+        {
+            return SymbolsToEnum.GetValueOrDefault(symbol);
+        }
+
+        return null;
+    }
 };
 

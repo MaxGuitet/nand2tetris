@@ -1,6 +1,9 @@
 class KeywordToken : IToken
 {
+    internal override TokenType type => TokenType.KEYWORD;
+
     KeywordTypeEnum keywordType;
+
     public KeywordToken(string keyword)
     {
         try
@@ -12,6 +15,7 @@ class KeywordToken : IToken
             throw new JackSyntaxException($"Unknown keyword \"{keyword}\".", ex);
         }
     }
+
 
     public override string GetXMLCode()
     {

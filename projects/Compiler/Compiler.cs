@@ -1,6 +1,7 @@
 ﻿class Compiler
 {
     private static string inputPath = "";
+    private static StreamWriter writer;
 
     public static void Main(string[] args)
     {
@@ -12,7 +13,6 @@
         }
 
         string[] files = IoUtils.ExtractFiles(inputPath, ".jack");
-        string outputFileName = IoUtils.GetOutputFilePath(inputPath, ".xml");
 
         CompileFiles(files);
     }
@@ -28,11 +28,18 @@
     private static void CompileFile(string filePath)
     {
         string fileName = Path.GetFileNameWithoutExtension(filePath);
+        string outputFilePath = IoUtils.GetOutputFilePath(inputPath, ".xml");
         JackTokenizer tokenizer = new JackTokenizer(filePath);
+
+        // TODO: This is a temporary solution will be replaced by the actual Code generator in next module
+        StreamWriter writer = new StreamWriter(outputFilePath);
+
 
         while (tokenizer.HasMoreTokens())
         {
             IToken token = tokenizer.Advance();
+            writer.WriteLine(token.GetXMLCode());
         }
+        writer.Close();
     }
 }

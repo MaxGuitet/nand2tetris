@@ -3,14 +3,14 @@ using System.Diagnostics.CodeAnalysis;
 public class SymbolToken : IToken
 {
     SymbolTypeEnum symbolType;
-    public SymbolToken(char symbol)
-    {
-        if (!SymbolTypeEnum.TryParse(symbol.ToString(), out symbolType))
-        {
 
-            throw new JackSyntaxException($"Unknown Symbol \"{symbol}\".");
-        }
+    internal override TokenType type => TokenType.SYMBOL;
+
+    public SymbolToken(SymbolTypeEnum symbolType)
+    {
+        this.symbolType = symbolType;
     }
+
 
     public override string GetXMLCode()
     {
@@ -20,15 +20,15 @@ public class SymbolToken : IToken
     public static bool TryParse(string symbol, [MaybeNullWhen(false)] out SymbolToken outVar)
     {
         outVar = null;
-
         if (symbol.Length > 1)
         {
             return false;
         }
 
-        if (Enum.TryParse<SymbolTypeEnum>(symbol, true, out _))
+        SymbolTypeEnum? symbolType = SymbolTypeDict.GetEnumFromSymbol(symbol[0]);
+        if (symbolType != null)
         {
-            outVar = new SymbolToken(symbol[0]);
+            outVar = new SymbolToken((SymbolTypeEnum)symbolType);
             return true;
         }
 

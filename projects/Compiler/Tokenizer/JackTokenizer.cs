@@ -1,5 +1,3 @@
-using System.Text.RegularExpressions;
-
 class JackTokenizer
 {
     private StreamReader fileStream;
@@ -46,33 +44,52 @@ class JackTokenizer
         IToken? peekToken = null;
         bool fullWord = false;
 
-        SkipWhiteSpaces();
-        SkipCommentsAndEOL();
+        SkipCommentsWhiteSpacesAndEOL();
 
 
         // Read until the "currentWord" matches a known token.
         while (fileStream.Peek() > 0)
         {
-            char nextChar = (char)fileStream.Read();
+            char peekChar = (char)fileStream.Peek();
 
-            // When reaching a white space, we have finish the word. We can try to parse it as Int or identifier.
-            if (nextChar == ' ')
+            if (peekChar == '"')
+            {
+                peekToken = ParseStringToken();
+                break;
+            }
+
+            // First, check if next char is a symbol. In which case we need to stop (eg when having a function "main()")
+            SymbolToken? peekCharAsSymbol = CheckSymbolToken(peekChar.ToString());
+
+            // When reaching a symbol or white space, stop reading
+            if (currentWord.Length > 0 && (peekCharAsSymbol != null || peekChar == ' ' || peekChar == '\n'))
             {
                 fullWord = true;
             }
+            else
+            {
+                char nextChar = (char)fileStream.Read();
+                currentWord += nextChar;
+            }
 
-            currentWord += nextChar;
 
-            peekToken = CheckWordForToken(currentWord, fullWord);
+            if (currentWord.Length > 0)
+            {
+                peekToken = CheckWordForToken(currentWord, fullWord);
+            }
+            else
+            {
+                continue;
+            }
 
             if (peekToken != null)
             {
                 break;
             }
 
-            // If nextChar is a white space, we've reached the end of the word but no match was found.
+            // If we've reached the end of the word but no match was found.
             // throw Exception.
-            if (nextChar == ' ')
+            if (fullWord == true)
             {
                 throw new JackSyntaxException($"Unknow token {currentWord}");
             }
@@ -84,7 +101,7 @@ class JackTokenizer
     /** This method will read through Comments and EOL. It returns true if it found something, false otherwise.
      * Then it can be used in a loop to ignore recursively Comments and EOL.
      */
-    private void SkipCommentsAndEOL()
+    private void SkipCommentsWhiteSpacesAndEOL()
     {
         bool skipped = false;
 
@@ -131,7 +148,7 @@ class JackTokenizer
                     skipped = true;
                 }
             }
-            else if (peekChar == '\n')
+            else if (peekChar == '\n' || peekChar == ' ')
             {
                 fileStream.Read();
 
@@ -140,25 +157,8 @@ class JackTokenizer
         } while (skipped == true);
     }
 
-    /**
-     * This method will simply skip white spaces between tokens.
-     */
-    private void SkipWhiteSpaces()
-    {
-        while ((char)fileStream.Peek() == ' ')
-        {
-            fileStream.Read();
-        }
-    }
-
     private IToken? CheckWordForToken(string word, bool fullWord)
     {
-        KeywordToken? keywordToken = CheckKeywordToken(word);
-
-        if (keywordToken != null)
-        {
-            return keywordToken;
-        }
 
         SymbolToken? symbolToken = CheckSymbolToken(word);
 
@@ -167,18 +167,32 @@ class JackTokenizer
             return symbolToken;
         }
 
-        StringToken? stringToken = CheckStringToken(word);
-
-        // Can only parse int and identifiers if full words
         if (fullWord)
         {
+
+            // Need to check Integer before Keyword otherwise Int are parsed as enum value
             IntegerToken? intToken = CheckIntegerToken(word);
 
             if (intToken != null)
             {
                 return intToken;
             }
+
+            KeywordToken? keywordToken = CheckKeywordToken(word);
+
+            if (keywordToken != null)
+            {
+                return keywordToken;
+            }
+
+            IdentifierToken? identifierToken = CheckIdentifierToken(word);
+
+            if (identifierToken != null)
+            {
+                return identifierToken;
+            }
         }
+
 
         return null;
 
@@ -198,7 +212,7 @@ class JackTokenizer
 
     private SymbolToken? CheckSymbolToken(string word)
     {
-        SymbolToken match;
+        SymbolToken? match;
         if (SymbolToken.TryParse(word, out match))
         {
             return match;
@@ -207,14 +221,10 @@ class JackTokenizer
 
     }
 
-    private StringToken? CheckStringToken(string word)
+    private StringToken? ParseStringToken()
     {
-        if (word[0] != '"')
-        {
-            return null;
-        }
-
-        string fullString = "\"";
+        string fullString = "";
+        fullString += (char)fileStream.Read();
 
         while ((char)fileStream.Peek() != '"')
         {
@@ -224,20 +234,26 @@ class JackTokenizer
         // When we go out of the loop, we still have the last `"` to read.
         fullString += (char)fileStream.Read();
 
-        StringToken? match;
-        if (StringToken.TryParse(fullString, out match))
+        StringToken match = new StringToken(fullString);
+
+        return match;
+    }
+
+    private IntegerToken? CheckIntegerToken(string word)
+    {
+        IntegerToken? match;
+        if (IntegerToken.TryParse(word, out match))
         {
             return match;
         }
 
         return null;
-
     }
 
-    private IntegerToken? CheckIntegerToken(string word)
+    private IdentifierToken? CheckIdentifierToken(string word)
     {
-        IntegerToken match;
-        if (IntegerToken.TryParse(word, out match))
+        IdentifierToken? match;
+        if (IdentifierToken.TryParse(word, out match))
         {
             return match;
         }
